@@ -34,7 +34,7 @@ class PostResource extends JsonResource
 
                     return $carry;
                 }, []);
-            }),
+            }, []),
             'published'  => $post->isPublished(),
             'created_at' => $post->getCreatedAt(),
             'updated_at' => $post->getUpdatedAt(),
