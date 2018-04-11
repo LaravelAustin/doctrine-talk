@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Entities\Post;
+use App\Entities\Tag;
 use App\Repositories\PostRepository;
+use App\Services\PostService;
+use GeneratedHydrator\Configuration;
 use Hashids\Hashids;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,6 +38,16 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(Hashids::class, function () {
             return new Hashids('doctrine-example', 16, 'abcdefghijklmnopqrstuvwxyz');
+        });
+
+        $this->app->bind(PostService::class, function () {
+            $config = new Configuration(Post::class);
+
+            return new PostService(
+                $this->app['em'],
+                $this->app['em']->getRepository(Tag::class),
+                $this->app[$config->createFactory()->getHydratorClass()]
+            );
         });
     }
 }
