@@ -94,4 +94,14 @@ class User
     {
         return \trim("{$this->getFirstName()} {$this->getLastName()}");
     }
+
+    public function authorPost(Post $post): void
+    {
+        if ($this->posts->contains($post)) {
+            return;
+        }
+
+        $this->posts->add($post);
+        $post->authoredBy($this);
+    }
 }

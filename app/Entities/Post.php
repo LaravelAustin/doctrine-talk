@@ -44,7 +44,7 @@ class Post
     *
     * @ORM\Column(name="published", type="boolean")
     */
-    private $published;
+    private $published = false;
 
     /**
      * @var User
@@ -127,7 +127,7 @@ class Post
     /**
      * @param User $author
      */
-    public function setAuthor(User $author): void
+    public function authoredBy(User $author): void
     {
         $this->author = $author;
     }
@@ -138,14 +138,6 @@ class Post
     public function getComments(): ArrayCollection
     {
         return $this->comments;
-    }
-
-    /**
-     * @param ArrayCollection $comments
-     */
-    public function setComments(ArrayCollection $comments): void
-    {
-        $this->comments = $comments;
     }
 
     /**
