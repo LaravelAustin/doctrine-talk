@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Queries\PostQuery;
 use Doctrine\ORM\EntityRepository;
 use Illuminate\Support\Collection;
 
@@ -15,12 +16,12 @@ class PostRepository extends EntityRepository
         return collect($query
             ->select('p, t, a')
             ->from($this->getEntityName(), 'p')
-            ->join('p.tags', 't')
+            ->leftJoin('p.tags', 't')
             ->join('p.author', 'a')
             ->getQuery()->getResult());
     }
 
-    public function getFilteredPosts(array $filters): Collection
+    public function getFilteredPosts(PostQuery $postQuery): Collection
     {
         $query = $this->getEntityManager()
             ->createQueryBuilder();
@@ -28,10 +29,9 @@ class PostRepository extends EntityRepository
         return collect($query
             ->select('p, t, a')
             ->from($this->getEntityName(), 'p')
-            ->join('p.tags', 't')
+            ->leftJoin('p.tags', 't')
             ->join('p.author', 'a')
-            // This is obviously not a clean way to handle this, just demonstration purposes
-            ->where($query->expr()->eq('p.published', $filters['published']))
+            ->addCriteria($postQuery->getCriteria())
             ->getQuery()->getResult());
     }
 }
