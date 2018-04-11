@@ -12,3 +12,9 @@
 */
 
 Route::get('/posts', 'PostController@index');
+
+Route::post('/posts', 'PostController@store');
+
+Route::get('/posts/{postId}', 'PostController@show');
+
+Route::patch('/posts/{postId}', 'PostController@patch');
